@@ -95,15 +95,15 @@ gsap.to({}, {
         rotationSpeedX = gsap.getProperty(this.targets()[0], "rotationSpeedX");
     },
     scrollTrigger: {
-        trigger: '#intro', // Trigger animation on the intro section
-        start: 'top 95%', // Start when the intro's top reaches near the bottom of the viewport
+        trigger: '#info', // Trigger animation on the intro section
+        start: 'top 80%', // Start when the intro's top reaches near the bottom of the viewport
         end: 'top 40%', // End when the intro is fully out of view
         scrub: true, // Smooth animation tied to scroll progress
         onUpdate: (self) => {
             // Map scroll progress to rotation speed values
             const progress = self.progress; // Progress is between 0 and 1
-            rotationSpeedY = 0.001 - progress * 0.0007; // Decrease speed along Y-axis
-            rotationSpeedX = 0.0005 - progress * 0.0004; // Decrease speed along X-axis
+            rotationSpeedY = 0.0016 - progress * 0.0014; // Decrease speed along Y-axis
+            rotationSpeedX = 0.001 - progress * 0.0008; // Decrease speed along X-axis
         },
     },
 });
@@ -117,8 +117,8 @@ gsap.to(geometry.attributes.position.array, {
     ease: 'power2.out', // Smooth easing effect
     duration: 2, // Duration of the transition
     scrollTrigger: {
-        trigger: '#intro', // Trigger animation on the intro section
-        start: 'top 95%', // Start when the intro's top reaches near the bottom of the viewport
+        trigger: '#info', // Trigger animation on the intro section
+        start: 'top 80%', // Start when the intro's top reaches near the bottom of the viewport
         end: 'bottom bottom', // End when the intro is fully out of view
         scrub: true, // Smooth animation tied to scroll progress
     },
@@ -129,8 +129,8 @@ gsap.to(camera.position, {
     z: 2, // Zoom in closer to the point cloud
     ease: 'power2.out', // Smooth easing effect
     scrollTrigger: {
-        trigger: '#intro', // Trigger animation on the intro section
-        start: 'top 95%', // Start when the intro's top reaches near the bottom of the viewport
+        trigger: '#info', // Trigger animation on the intro section
+        start: 'top 80%', // Start when the intro's top reaches near the bottom of the viewport
         end: 'bottom bottom', // End when the intro is fully out of view
         scrub: true, // Smooth animation tied to scroll progress
     },
