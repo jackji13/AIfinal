@@ -1,3 +1,4 @@
+
 * {
     border: 1px solid red;
     margin: 0;
@@ -23,9 +24,11 @@ body {
 }
 
 h1 {
+    font-weight: 600;
     font-size: 48pt;
     white-space: nowrap; /* Prevent line breaks */
     animation: h1 1.5s ease;
+    z-index: 10;
 }
 
 @keyframes h1 {
@@ -41,25 +44,34 @@ h1 {
 
 #intro {
     width: 100vw;
-    height: 100vh;
+    height: 200vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.text {
+    width: 50%;
+    font-size: 18pt;
+    text-align: justify;
+    font-weight: 600;
 }
 
 #visualization {
     width: 100vw;
-    height: 200vh;
+    height: 100vh;
 }
 
 #threejs-container {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     width: 100vw;
     height: 100vh;
     z-index: -1;
-    background-color: #00000000;
     border: 2px solid blue;
     pointer-events: none;
-    animation: js 1.5s 1s ease both;
+    animation: js 1.5s 1.5s ease both;
 }
 
 @keyframes js {
@@ -70,4 +82,3 @@ h1 {
         opacity: 1;
     }
 }
-

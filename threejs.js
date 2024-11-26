@@ -1,3 +1,6 @@
+// Ensure GSAP's ScrollTrigger is registered
+gsap.registerPlugin(ScrollTrigger);
+
 // Select the container element
 const container = document.getElementById('threejs-container');
 
@@ -7,14 +10,50 @@ const camera = new THREE.PerspectiveCamera(75, container.offsetWidth / container
 const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true }); // Enable transparency
 renderer.setSize(container.offsetWidth, container.offsetHeight);
 renderer.setPixelRatio(window.devicePixelRatio); // For high-resolution displays
-renderer.setClearColor(0x000000, 0); // Set background to transparent
+renderer.setClearColor(0x000000, 0); // Transparent background
 container.appendChild(renderer.domElement);
 
-// Add a rotating cube to represent the "black box"
-const geometry = new THREE.BoxGeometry();
-const material = new THREE.MeshBasicMaterial({ color: 0x0077ff, wireframe: true });
-const cube = new THREE.Mesh(geometry, material);
-scene.add(cube);
+// Create a point cloud
+const pointCount = 1000; // Number of points in the cloud
+const positions = new Float32Array(pointCount * 3); // Array to hold x, y, z coordinates
+const originalPositions = new Float32Array(pointCount * 3); // To save original positions for animation
+
+for (let i = 0; i < pointCount; i++) {
+    // Randomly spread points across a large space
+    const x = (Math.random() - 0.5) * 10; // x coordinate
+    const y = (Math.random() - 0.5) * 10; // y coordinate
+    const z = (Math.random() - 0.5) * 10; // z coordinate
+
+    originalPositions[i * 3] = x;
+    originalPositions[i * 3 + 1] = y;
+    originalPositions[i * 3 + 2] = z;
+
+    // Start with points clustered at the center
+    positions[i * 3] = x * 0.1; // Initially scale down positions
+    positions[i * 3 + 1] = y * 0.1;
+    positions[i * 3 + 2] = z * 0.1;
+}
+
+// Create a buffer geometry to hold the points
+const geometry = new THREE.BufferGeometry();
+geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+
+// Create a material for the points (circles)
+const material = new THREE.PointsMaterial({
+    size: 0.1, // Size of each point
+    color: 0x0077ff,
+    transparent: true,
+    opacity: 0.8,
+    sizeAttenuation: true, // Enables size attenuation for perspective
+});
+material.map = new THREE.TextureLoader().load('https://threejs.org/examples/textures/sprites/circle.png');
+material.map.wrapS = material.map.wrapT = THREE.RepeatWrapping;
+material.map.repeat.set(1, 1);
+material.alphaTest = 0.5; // Avoid transparency issues
+
+// Create the point cloud
+const pointCloud = new THREE.Points(geometry, material);
+scene.add(pointCloud);
 
 // Position the camera
 camera.position.z = 5;
@@ -30,28 +69,69 @@ function onWindowResize() {
 window.addEventListener('resize', onWindowResize);
 
 // Animation loop
+// Define rotation speed variables
+let rotationSpeedY = 0.001; // Initial Y-axis rotation speed
+let rotationSpeedX = 0.0005; // Initial X-axis rotation speed
+
+// Animation loop
 function animate() {
     requestAnimationFrame(animate);
+
+    // Apply dynamic rotation speeds
+    pointCloud.rotation.y += rotationSpeedY; // Rotate on Y-axis
+    pointCloud.rotation.x += rotationSpeedX; // Slight rotation on X-axis
+
     renderer.render(scene, camera);
 }
 animate();
 
-// GSAP scroll animation
-gsap.to(cube.rotation, {
-    x: Math.PI * 4, // Rotate 4 full turns on the X-axis
-    y: Math.PI * 4, // Rotate 4 full turns on the Y-axis
+// GSAP scroll animation for the point cloud's spin speed
+gsap.to({}, {
+    ease: 'power2.out', // Smooth easing effect
+    duration: 1, // Adjustable duration for smoother transition
+    onUpdate: function () {
+        // Dynamically update rotation speeds
+        rotationSpeedY = gsap.getProperty(this.targets()[0], "rotationSpeedY");
+        rotationSpeedX = gsap.getProperty(this.targets()[0], "rotationSpeedX");
+    },
     scrollTrigger: {
-        trigger: '#visualization',
-        start: 'top top',
-        end: 'bottom bottom',
+        trigger: '#intro', // Trigger animation on the intro section
+        start: 'top 95%', // Start when the intro's top reaches near the bottom of the viewport
+        end: 'top 40%', // End when the intro is fully out of view
+        scrub: true, // Smooth animation tied to scroll progress
+        onUpdate: (self) => {
+            // Map scroll progress to rotation speed values
+            const progress = self.progress; // Progress is between 0 and 1
+            rotationSpeedY = 0.001 - progress * 0.0007; // Decrease speed along Y-axis
+            rotationSpeedX = 0.0005 - progress * 0.0004; // Decrease speed along X-axis
+        },
+    },
+});
+
+// GSAP scroll animation for the point cloud, controlling point distance
+gsap.to(geometry.attributes.position.array, {
+    endArray: originalPositions, // End positions: spread out points
+    onUpdate: () => {
+        geometry.attributes.position.needsUpdate = true; // Notify Three.js of position updates
+    },
+    ease: 'power2.out', // Smooth easing effect
+    duration: 2, // Duration of the transition
+    scrollTrigger: {
+        trigger: '#intro', // Trigger animation on the intro section
+        start: 'top 95%', // Start when the intro's top reaches near the bottom of the viewport
+        end: 'bottom bottom', // End when the intro is fully out of view
         scrub: true, // Smooth animation tied to scroll progress
     },
 });
 
-// Add lighting for better visuals
-const ambientLight = new THREE.AmbientLight(0xffffff, 0.5); // Soft light
-scene.add(ambientLight);
-
-const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
-directionalLight.position.set(5, 5, 5).normalize();
-scene.add(directionalLight);
+// GSAP camera zoom animation
+gsap.to(camera.position, {
+    z: 2, // Zoom in closer to the point cloud
+    ease: 'power2.out', // Smooth easing effect
+    scrollTrigger: {
+        trigger: '#intro', // Trigger animation on the intro section
+        start: 'top 95%', // Start when the intro's top reaches near the bottom of the viewport
+        end: 'bottom bottom', // End when the intro is fully out of view
+        scrub: true, // Smooth animation tied to scroll progress
+    },
+});

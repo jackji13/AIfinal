@@ -7,22 +7,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Breaking the Black Box of AI</title>
     <link rel="stylesheet" href="style.css">
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.155.0/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
     <script src="https://d3js.org/d3.v7.min.js"></script>
 
 </head>
 
 <body>
 
+    <div id="threejs-container"></div>
+
     <section class="title">
         <h1>BREAKING THE BLACK BOX OF AI</h1>
-        <div id="threejs-container"></div>
     </section>
 
     <section id="intro">
 
-        <p></p>
+        <p class="text">
+            Artificial Intelligence (AI) plays an increasingly significant role in our 
+            lives, yet its "Black Box" nature often leaves people in the dark about how 
+            it works or the biases it may perpetuate. This lack of transparency undermines 
+            trust, accountability, and fairness, disproportionately impacting marginalized 
+            communities.  
+            <br>
+            <br>
+            Our website seeks to break the Black Box of AI by making its complexities 
+            accessible through interactive visuals and engaging animations. By revealing 
+            how AI systems process data, make decisions, and can be influenced by biases, 
+            we aim to empower users to critically understand and question these technologies, 
+            fostering a more informed and equitable society.
+        </p>
 
     </section>
 
@@ -33,6 +50,7 @@
     </section>
 
     <script src="threejs.js"></script>
+    <script src="text.js"></script>
 
 </body>
 
