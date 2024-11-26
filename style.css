@@ -24,6 +24,19 @@ body {
 
 h1 {
     font-size: 48pt;
+    white-space: nowrap; /* Prevent line breaks */
+    animation: h1 1.5s ease;
+}
+
+@keyframes h1 {
+    0% {
+        opacity: 0;
+        letter-spacing: 100px;
+    }
+    100% {
+        opacity: 1;
+        letter-spacing: 0px;
+    }
 }
 
 #intro {
@@ -37,7 +50,24 @@ h1 {
 }
 
 #threejs-container {
-    background-color: red;
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100vw;
     height: 100vh;
+    z-index: -1;
+    background-color: #00000000;
+    border: 2px solid blue;
+    pointer-events: none;
+    animation: js 1.5s 1s ease both;
 }
+
+@keyframes js {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+

@@ -4,8 +4,10 @@ const container = document.getElementById('threejs-container');
 // Set up the scene, camera, and renderer
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, container.offsetWidth / container.offsetHeight, 0.1, 1000);
-const renderer = new THREE.WebGLRenderer({ antialias: true });
+const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true }); // Enable transparency
 renderer.setSize(container.offsetWidth, container.offsetHeight);
+renderer.setPixelRatio(window.devicePixelRatio); // For high-resolution displays
+renderer.setClearColor(0x000000, 0); // Set background to transparent
 container.appendChild(renderer.domElement);
 
 // Add a rotating cube to represent the "black box"
@@ -17,14 +19,15 @@ scene.add(cube);
 // Position the camera
 camera.position.z = 5;
 
-// Resize the renderer on window resize
-window.addEventListener('resize', () => {
+// Handle window resizing
+function onWindowResize() {
     const width = container.offsetWidth;
     const height = container.offsetHeight;
     renderer.setSize(width, height);
     camera.aspect = width / height;
     camera.updateProjectionMatrix();
-});
+}
+window.addEventListener('resize', onWindowResize);
 
 // Animation loop
 function animate() {
