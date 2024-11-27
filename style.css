@@ -94,13 +94,13 @@ h1 {
     font-size: 18pt;
     font-weight: 600;
     text-align: justify;
-    opacity: 0; /* Initially hidden */
-    transform: translateX(-50vw); /* Start position off-screen */
+
 }
 
 .info-text p {
     margin-bottom: 20px;
     line-height: 1.6;
+    opacity: 1; /* Initially hidden */
 }
 
 #visualization {

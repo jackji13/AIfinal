@@ -53,10 +53,6 @@ gsap.to(threejsElement1, {
 });
 
 
-// Ensure GSAP's ScrollTrigger is registered
-// Ensure GSAP's ScrollTrigger is registered
-gsap.registerPlugin(ScrollTrigger);
-
 gsap.from('.info-text p', {
     x: '-50vw', // Start position off-screen to the left
     opacity: 0, // Initially hidden
@@ -67,20 +63,6 @@ gsap.from('.info-text p', {
         trigger: '#info', // Trigger animation when #info section is visible
         start: 'top 75%', // Start animation when #info is 75% in viewport
         end: 'top 25%', // End animation when #info is 25% in viewport
-        scrub: true, // Smoothly ties animation to scroll progress
-    },
-});
-
-// Animate the info text flying in from the left
-gsap.to('.info-text', {
-    x: 0, // Move to its original position
-    opacity: 1, // Fade in
-    ease: 'power2.out', // Smooth easing
-    duration: 1.5, // Animation duration
-    scrollTrigger: {
-        trigger: '#info', // Trigger animation when #info is visible
-        start: 'top 75%', // Start animation when #info is 75% in viewport
-        end: 'top 25%', // End animation when it is 25% in viewport
         scrub: true, // Smoothly ties animation to scroll progress
     },
 });
