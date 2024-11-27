@@ -85,6 +85,22 @@ h1 {
     display: flex;
     justify-content: center;
     align-items: center;
+    position: relative;
+    overflow: hidden; /* Ensures animation stays within bounds */
+}
+
+.info-text {
+    width: 70%;
+    font-size: 18pt;
+    font-weight: 600;
+    text-align: justify;
+    opacity: 0; /* Initially hidden */
+    transform: translateX(-50vw); /* Start position off-screen */
+}
+
+.info-text p {
+    margin-bottom: 20px;
+    line-height: 1.6;
 }
 
 #visualization {
