@@ -23,7 +23,7 @@ body {
     height: 100vh;
     z-index: -1;
     opacity: 1;
-    border: 2px solid blue;
+    /* border: 2px solid blue; */
     pointer-events: none;
     animation: js 1.5s 1.5s ease both;
 }
@@ -123,8 +123,13 @@ h1 {
     line-height: 1.6;
 }
 
-
-#visualization {
+#aimodel-container {
     width: 100vw;
     height: 100vh;
+    opacity: 1;
+    border: 2px solid rgb(0, 255, 64);
+    pointer-events: none;
+}
+#aimodel-container p {
+    position: absolute;
 }

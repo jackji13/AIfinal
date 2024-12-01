@@ -12,6 +12,15 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/CopyShader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/EffectComposer.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/RenderPass.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/lights/RectAreaLightUniformsLib.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/ShaderPass.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/RGBELoader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/EXRLoader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    
     <script src="https://d3js.org/d3.v7.min.js"></script>
 
 </head>
@@ -72,17 +81,13 @@
         </div>
     </section>
     
-    
-    
-
-    <section id="visualization">
-
-        <div id="d3-container"></div>
-
-    </section>
+    <div id="aimodel-container">
+        <p class="aimodel-text">pick an AI model to learn more</p>
+    </div>
 
     <script src="animate.js"></script>
-    <script src="threejs.js"></script>
+    <script src="pointcloud.js"></script>
+    <script src="aimodel.js"></script>
 
 </body>
 

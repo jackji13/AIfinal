@@ -43,7 +43,7 @@ const squareTexture = new THREE.TextureLoader().load('assets/square.png'); // Sq
 // Create a material for the points (circles by default)
 const material = new THREE.PointsMaterial({
     size: 0.1,
-    color: 0x0077ff,
+    color: new THREE.Color(0x0077ff), // Initial color blue
     transparent: true,
     opacity: 0.8,
     sizeAttenuation: true,
@@ -82,8 +82,11 @@ function animate() {
 }
 animate();
 
-// GSAP animation to toggle between circle and square textures
-gsap.to({}, {
+// GSAP animation to toggle between circle and square textures with smooth color transition
+gsap.to(material.color, {
+    r: 0.3, // Transition red channel from blue (0.0077ff) to green (0x00ff00)
+    g: 1, // Full green channel
+    b: 0, // No blue channel
     scrollTrigger: {
         trigger: '#training', // Trigger on the training section
         start: 'top 75%', // Start when #training is 75% in the viewport
@@ -92,11 +95,9 @@ gsap.to({}, {
         onUpdate: (self) => {
             const progress = self.progress; // Scroll progress between 0 and 1
             if (progress > 0.5) {
-                material.color.set(0x00ff00); // Change color to green
-                material.map = squareTexture; // Use square texture
+                material.map = squareTexture; // Switch to square texture
             } else {
-                material.color.set(0x0077ff); // Change color back to blue
-                material.map = circleTexture; // Use circle texture
+                material.map = circleTexture; // Switch back to circle texture
             }
             material.needsUpdate = true; // Ensure material updates in the scene
         },
