@@ -1,6 +1,6 @@
 
 * {
-    border: 1px solid red;
+    /* border: 1px solid red; */
     margin: 0;
     padding: 0;
 }
@@ -22,6 +22,7 @@ body {
     width: 100vw;
     height: 100vh;
     z-index: -1;
+    opacity: 1;
     border: 2px solid blue;
     pointer-events: none;
     animation: js 1.5s 1.5s ease both;
@@ -85,8 +86,6 @@ h1 {
     display: flex;
     justify-content: center;
     align-items: center;
-    position: relative;
-    overflow: hidden; /* Ensures animation stays within bounds */
 }
 
 .info-text {
@@ -102,6 +101,28 @@ h1 {
     line-height: 1.6;
     opacity: 1; /* Initially hidden */
 }
+
+#training {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.training-text {
+    width: 70%;
+    font-size: 18pt;
+    font-weight: 600;
+    text-align: justify;
+    opacity: 1;
+}
+
+.training-text p {
+    margin-bottom: 20px;
+    line-height: 1.6;
+}
+
 
 #visualization {
     width: 100vw;

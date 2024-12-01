@@ -97,13 +97,13 @@ gsap.to({}, {
     scrollTrigger: {
         trigger: '#info', // Trigger animation on the intro section
         start: 'top 80%', // Start when the intro's top reaches near the bottom of the viewport
-        end: 'top 40%', // End when the intro is fully out of view
+        end: 'top 30%', // End when the intro is fully out of view
         scrub: true, // Smooth animation tied to scroll progress
         onUpdate: (self) => {
             // Map scroll progress to rotation speed values
             const progress = self.progress; // Progress is between 0 and 1
-            rotationSpeedY = 0.0016 - progress * 0.0014; // Decrease speed along Y-axis
-            rotationSpeedX = 0.001 - progress * 0.0008; // Decrease speed along X-axis
+            rotationSpeedY = 0.0016 - progress * 0.0015; // Decrease speed along Y-axis
+            rotationSpeedX = 0.001 - progress * 0.00085; // Decrease speed along X-axis
         },
     },
 });
@@ -119,7 +119,7 @@ gsap.to(geometry.attributes.position.array, {
     scrollTrigger: {
         trigger: '#info', // Trigger animation on the intro section
         start: 'top 80%', // Start when the intro's top reaches near the bottom of the viewport
-        end: 'bottom bottom', // End when the intro is fully out of view
+        end: 'bottom 80%', // End when the intro is fully out of view
         scrub: true, // Smooth animation tied to scroll progress
     },
 });

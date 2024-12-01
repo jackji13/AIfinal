@@ -52,17 +52,42 @@ gsap.to(threejsElement1, {
     },
 });
 
-
 gsap.from('.info-text p', {
     x: '-50vw', // Start position off-screen to the left
     opacity: 0, // Initially hidden
     ease: 'power2.out', // Smooth easing effect
     duration: 1.5, // Duration of each animation
-    stagger: 0.3, // Delay between each paragraph animation
+    stagger: 0.5, // Delay between each paragraph animation
     scrollTrigger: {
         trigger: '#info', // Trigger animation when #info section is visible
-        start: 'top 75%', // Start animation when #info is 75% in viewport
-        end: 'top 25%', // End animation when #info is 25% in viewport
+        start: 'top 70%', // Start animation when #info is 75% in viewport
+        end: 'top top', // End animation when #info is 25% in viewport
+        scrub: true, // Smoothly ties animation to scroll progress
+    },
+});
+
+gsap.to('#info', {
+    opacity: 0, // Fade out
+    scale: 0.5, // Scale down to 50%
+    ease: 'power2.out', // Smooth easing effect
+    scrollTrigger: {
+        trigger: '#info', // Trigger animation when scrolling the .title section
+        start: 'bottom 80%', // Start when .title reaches the top of the viewport
+        end: 'bottom 30%', // End when .title is fully out of view
+        scrub: true, // Smooth animation tied to scroll progress
+    },
+});
+
+// Animate the training section text
+gsap.from('.training-text', {
+    opacity: 0, // Fade in
+    x: '150px', // Slide into position
+    ease: 'power2.out', // Smooth easing
+    duration: 1.5, // Animation duration
+    scrollTrigger: {
+        trigger: '#training', // Trigger animation when #training is visible
+        start: 'top 40%', // Start animation when #training is 75% in viewport
+        end: 'top top', // End animation when it is 25% in viewport
         scrub: true, // Smoothly ties animation to scroll progress
     },
 });
