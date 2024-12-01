@@ -1,0 +1,25 @@
+* {
+    border: 1px solid red;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f7;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    overflow-x: hidden;
+}
+
+#title {
+    width: 100vw;
+    height: 100vh;
+}
+
+#model-container {
+    width: 100vw;
+    height: 100vh;
+}

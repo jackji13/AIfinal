@@ -59,6 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const boxes = [];
     const textureLoader = new THREE.TextureLoader();
     const texturePaths = ['assets/gpt.png', 'assets/gemini.png', 'assets/stable.png', 'assets/runway.png'];
+    const targetPages = ['p1.html', 'p2.html', 'p3.html', 'p4.html'];
 
     for (let i = 0; i < rows; i++) {
         for (let j = 0; j < cols; j++) {
@@ -80,7 +81,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     depthTest: false
                 });
 
-                // Set uniform height for all textures and calculate width based on aspect ratio
                 const uniformHeight = 3.6;
                 const aspectRatio = tex.image.width / tex.image.height;
                 const overlayWidth = uniformHeight * aspectRatio;
@@ -100,6 +100,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 j * spacingColumn - (cols * spacingColumn) / 2 + spacingColumn / 2
             );
 
+            // Make the box clickable
+            box.userData = { page: targetPages[i] };
             scene.add(box);
             boxes.push(box);
         }
@@ -118,7 +120,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const mouse = new THREE.Vector2();
     let intersectedBox = null;
     let previousIntersectedBox = null;
-    let resetCameraTimeout = null;
+    let hoverTimeout = null;
 
     function resetCameraToDefault() {
         if (!intersectedBox) {
@@ -146,77 +148,52 @@ document.addEventListener('DOMContentLoaded', () => {
         intersectedBox = intersects.length > 0 ? intersects[0].object : null;
 
         if (intersectedBox !== previousIntersectedBox) {
-            if (resetCameraTimeout) clearTimeout(resetCameraTimeout);
-
-            boxes.forEach(box => {
-                gsap.to(box.position, { y: 0, duration: 0.5, ease: "power1.out" });
-            });
+            clearTimeout(hoverTimeout);
+            boxes.forEach(box => gsap.to(box.position, { y: 0, duration: 0.5, ease: "power1.out" }));
 
             if (intersectedBox) {
-                const hoveredBoxIndex = boxes.indexOf(intersectedBox);
+                gsap.to(intersectedBox.position, { y: 9, duration: 0.5, ease: "power1.out" });
 
-                gsap.to(intersectedBox.position, {
-                    y: 9,
-                    duration: 0.5,
-                    ease: "power1.out",
-                    onComplete: () => {
-                        if (intersectedBox) {
-                            gsap.to(controls.target, {
-                                x: intersectedBox.position.x,
-                                y: 8,
-                                z: intersectedBox.position.z,
-                                duration: 0.5,
-                                ease: "power1.out",
-                                onUpdate: () => {
-                                    camera.lookAt(controls.target);
-                                    controls.update();
-                                }
-                            });
-                        }
+                // Set a timeout to move the camera after 0.5s
+                hoverTimeout = setTimeout(() => {
+                    if (intersectedBox) {
+                        gsap.to(controls.target, {
+                            x: intersectedBox.position.x,
+                            y: 8,
+                            z: intersectedBox.position.z,
+                            duration: 0.5,
+                            ease: "power1.out",
+                            onUpdate: () => {
+                                camera.lookAt(controls.target);
+                                controls.update();
+                            }
+                        });
                     }
-                });
-
-                if (hoveredBoxIndex >= 0) {
-                    const { firstLevelNeighbors, secondLevelNeighbors } = getTopBottomNeighborsAndNext(hoveredBoxIndex, rows, cols);
-
-                    firstLevelNeighbors.forEach(index => {
-                        gsap.to(boxes[index].position, { y: 4, duration: 0.5, ease: "power1.out" });
-                    });
-
-                    secondLevelNeighbors.forEach(index => {
-                        gsap.to(boxes[index].position, { y: 2, duration: 0.5, ease: "power1.out" });
-                    });
-                }
+                }, 500);
             }
 
             previousIntersectedBox = intersectedBox;
-            resetCameraTimeout = setTimeout(resetCameraToDefault, 1000);
+            setTimeout(resetCameraToDefault, 1000);
         }
     }
 
-    function getTopBottomNeighborsAndNext(index, rows, cols) {
-        const firstLevelNeighbors = [];
-        const secondLevelNeighbors = [];
-        const row = Math.floor(index / cols);
+    function onMouseClick(event) {
+        mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+        mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
 
-        if (row > 0) {
-            firstLevelNeighbors.push(index - cols);
-            if (row > 1) {
-                secondLevelNeighbors.push(index - 2 * cols);
+        raycaster.setFromCamera(mouse, camera);
+        const intersects = raycaster.intersectObjects(boxes);
+
+        if (intersects.length > 0) {
+            const clickedBox = intersects[0].object;
+            if (clickedBox.userData.page) {
+                window.location.href = clickedBox.userData.page;
             }
         }
-
-        if (row < rows - 1) {
-            firstLevelNeighbors.push(index + cols);
-            if (row < rows - 2) {
-                secondLevelNeighbors.push(index + 2 * cols);
-            }
-        }
-
-        return { firstLevelNeighbors, secondLevelNeighbors };
     }
 
     window.addEventListener('mousemove', onMouseMove, false);
+    window.addEventListener('click', onMouseClick, false);
 
     const animate = function () {
         requestAnimationFrame(animate);
