@@ -52,6 +52,18 @@ gsap.to(threejsElement1, {
     },
 });
 
+gsap.to(threejsElement1, {
+    opacity: 0, // Return to its original position
+    scale: 2, // Scale down to 50%
+    ease: 'power2.out', // Smooth easing effect
+    scrollTrigger: {
+        trigger: '#aimodel-container', // Trigger animation on the intro section
+        start: 'top bottom', // Start when the intro's top reaches near the bottom of the viewport
+        end: 'top 20%', // End when the intro is fully out of view
+        scrub: true, // Smooth animation tied to scroll progress
+    },
+});
+
 gsap.from('.info-text p', {
     x: '-50vw', // Start position off-screen to the left
     opacity: 0, // Initially hidden
@@ -81,13 +93,37 @@ gsap.to('#info', {
 // Animate the training section text
 gsap.from('.training-text', {
     opacity: 0, // Fade in
-    x: '150px', // Slide into position
+    x: '-250px', // Slide into position
     ease: 'power2.out', // Smooth easing
     duration: 1.5, // Animation duration
     scrollTrigger: {
         trigger: '#training', // Trigger animation when #training is visible
         start: 'top 40%', // Start animation when #training is 75% in viewport
         end: 'top top', // End animation when it is 25% in viewport
+        scrub: true, // Smoothly ties animation to scroll progress
+    },
+});
+
+gsap.to('#training', {
+    opacity: 0, // Fade out
+    scale: 0.5, // Scale down to 50%
+    ease: 'power2.out', // Smooth easing effect
+    scrollTrigger: {
+        trigger: '#training', // Trigger animation when scrolling the .title section
+        start: 'bottom 80%', // Start when .title reaches the top of the viewport
+        end: 'bottom 30%', // End when .title is fully out of view
+        scrub: true, // Smooth animation tied to scroll progress
+    },
+});
+
+gsap.from('#aimodel-container', {
+    opacity: 0, // Fade in
+    ease: 'power2.out', // Smooth easing
+    duration: 1.5, // Animation duration
+    scrollTrigger: {
+        trigger: '#aimodel-container', // Trigger animation when #training is visible
+        start: 'top 75%', // Start animation when #training is 75% in viewport
+        end: 'top 20%', // End animation when it is 25% in viewport
         scrub: true, // Smoothly ties animation to scroll progress
     },
 });

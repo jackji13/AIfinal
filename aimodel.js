@@ -13,9 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
         frustumSize / 2, frustumSize / -2,
         0.1, 1000
     );
-    camera.position.z = 100;
-    camera.position.y = 50;
-    camera.position.x = -80; // Start position for animation
+    camera.position.set(-80, 50, 100);
 
     // Create a renderer
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
@@ -32,45 +30,75 @@ document.addEventListener('DOMContentLoaded', () => {
     controls.maxDistance = 500;
 
     // Set the target for the camera and OrbitControls
-    const targetX = 0;
-    const targetY = 0;
-    const targetZ = 0;
-    camera.lookAt(targetX, targetY, targetZ);
-    controls.target.set(targetX, targetY, targetZ);
+    const defaultTarget = new THREE.Vector3(0, 0, 0);
+    camera.lookAt(defaultTarget);
+    controls.target.copy(defaultTarget);
 
     // Create a shared material for boxes
     const sharedMaterial = new THREE.MeshPhysicalMaterial({
-        color: new THREE.Color(0x0077ff), // Blue color
+        color: new THREE.Color(0x0077ff),
         metalness: 0,
         roughness: 0.1,
-        transmission: 0.5, // Add transparency
+        transmission: 0.5,
         transparent: true,
         clearcoat: 1.0,
         clearcoatRoughness: 0,
         reflectivity: 3,
-        depthWrite: false, // Prevent writing to the depth buffer
+        depthWrite: false
     });
-    
 
     // Create a grid of boxes
-    const rows = 5;
+    const rows = 4;
     const cols = 1;
     const boxWidth = 0;
     const boxHeight = 10;
     const boxDepth = 10;
-    const spacingRow = 1.4;
+    const spacingRow = 3;
     const spacingColumn = 12;
 
     const boxes = [];
+    const textureLoader = new THREE.TextureLoader();
+    const texturePaths = ['assets/gpt.png', 'assets/gemini.png', 'assets/stable.png', 'assets/runway.png'];
+
     for (let i = 0; i < rows; i++) {
         for (let j = 0; j < cols; j++) {
             const geometry = new THREE.BoxGeometry(boxWidth, boxHeight, boxDepth);
-            const box = new THREE.Mesh(geometry, sharedMaterial.clone());
+            const material = sharedMaterial.clone();
+
+            const box = new THREE.Mesh(geometry, material);
+
+            // Load texture and apply as an overlay to a different face of the box
+            textureLoader.load(texturePaths[i], (tex) => {
+                tex.wrapS = THREE.ClampToEdgeWrapping;
+                tex.wrapT = THREE.ClampToEdgeWrapping;
+                tex.center.set(0.5, 0.5);
+                tex.repeat.set(1, 1);
+
+                const overlayMaterial = new THREE.MeshBasicMaterial({
+                    map: tex,
+                    transparent: true,
+                    depthTest: false
+                });
+
+                // Set uniform height for all textures and calculate width based on aspect ratio
+                const uniformHeight = 3.6;
+                const aspectRatio = tex.image.width / tex.image.height;
+                const overlayWidth = uniformHeight * aspectRatio;
+                const overlayHeight = uniformHeight;
+
+                const overlayGeometry = new THREE.PlaneGeometry(overlayWidth, overlayHeight);
+                const overlayMesh = new THREE.Mesh(overlayGeometry, overlayMaterial);
+                overlayMesh.position.set(boxWidth / 2 + 0.02, 0, 0);
+                overlayMesh.rotation.y = -Math.PI / 2;
+                box.add(overlayMesh);
+            });
 
             // Position the boxes in a grid
-            box.position.x = i * spacingRow - (rows * spacingRow) / 2 + spacingRow / 2;
-            box.position.y = 0;
-            box.position.z = j * spacingColumn - (cols * spacingColumn) / 2 + spacingColumn / 2;
+            box.position.set(
+                i * spacingRow - (rows * spacingRow) / 2 + spacingRow / 2,
+                0,
+                j * spacingColumn - (cols * spacingColumn) / 2 + spacingColumn / 2
+            );
 
             scene.add(box);
             boxes.push(box);
@@ -78,8 +106,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Add an area light on top of the boxes
-    const lightWidth = (rows * spacingRow + 50);
-    const lightHeight = (cols * spacingColumn + 50);
+    const lightWidth = rows * spacingRow + 50;
+    const lightHeight = cols * spacingColumn + 50;
     const areaLight = new THREE.RectAreaLight(0xffffff, 15, lightWidth, lightHeight);
     areaLight.position.set(0, 60, 0);
     areaLight.lookAt(0, 0, 0);
@@ -90,27 +118,36 @@ document.addEventListener('DOMContentLoaded', () => {
     const mouse = new THREE.Vector2();
     let intersectedBox = null;
     let previousIntersectedBox = null;
+    let resetCameraTimeout = null;
+
+    function resetCameraToDefault() {
+        if (!intersectedBox) {
+            gsap.to(controls.target, {
+                x: defaultTarget.x,
+                y: defaultTarget.y,
+                z: defaultTarget.z,
+                duration: 1,
+                ease: "power1.out",
+                onUpdate: () => {
+                    camera.lookAt(controls.target);
+                    controls.update();
+                }
+            });
+        }
+    }
 
     function onMouseMove(event) {
-        // Calculate mouse position in normalized device coordinates (-1 to +1)
         mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
         mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
 
-        // Update the picking ray with the camera and mouse position
         raycaster.setFromCamera(mouse, camera);
-
-        // Calculate objects intersecting the picking ray
         const intersects = raycaster.intersectObjects(boxes);
 
-        if (intersects.length > 0) {
-            intersectedBox = intersects[0].object;
-        } else {
-            intersectedBox = null;
-        }
+        intersectedBox = intersects.length > 0 ? intersects[0].object : null;
 
-        // Only update animations if the intersected box has changed
         if (intersectedBox !== previousIntersectedBox) {
-            // Reset previous animations
+            if (resetCameraTimeout) clearTimeout(resetCameraTimeout);
+
             boxes.forEach(box => {
                 gsap.to(box.position, { y: 0, duration: 0.5, ease: "power1.out" });
             });
@@ -118,30 +155,32 @@ document.addEventListener('DOMContentLoaded', () => {
             if (intersectedBox) {
                 const hoveredBoxIndex = boxes.indexOf(intersectedBox);
 
-                // Move the hovered box up
-                gsap.to(intersectedBox.position, { y: 9, duration: 0.5, ease: "power1.out", onComplete: () => {
-                    if (intersectedBox) {
-                        // Make the camera look at the hovered box with a fixed Y position
-                        gsap.to(controls.target, { 
-                            x: intersectedBox.position.x, 
-                            y: 8, // Fixed Y position
-                            z: intersectedBox.position.z, 
-                            duration: 0.5, 
-                            ease: "power1.out", 
-                            onUpdate: () => {
-                                camera.lookAt(controls.target);
-                                controls.update();
-                            }
-                        });
+                gsap.to(intersectedBox.position, {
+                    y: 9,
+                    duration: 0.5,
+                    ease: "power1.out",
+                    onComplete: () => {
+                        if (intersectedBox) {
+                            gsap.to(controls.target, {
+                                x: intersectedBox.position.x,
+                                y: 8,
+                                z: intersectedBox.position.z,
+                                duration: 0.5,
+                                ease: "power1.out",
+                                onUpdate: () => {
+                                    camera.lookAt(controls.target);
+                                    controls.update();
+                                }
+                            });
+                        }
                     }
-                }});
+                });
 
-                // Move top and bottom neighboring boxes up slightly
                 if (hoveredBoxIndex >= 0) {
                     const { firstLevelNeighbors, secondLevelNeighbors } = getTopBottomNeighborsAndNext(hoveredBoxIndex, rows, cols);
 
                     firstLevelNeighbors.forEach(index => {
-                        gsap.to(boxes[index].position, { y: 3, duration: 0.5, ease: "power1.out" });
+                        gsap.to(boxes[index].position, { y: 4, duration: 0.5, ease: "power1.out" });
                     });
 
                     secondLevelNeighbors.forEach(index => {
@@ -151,6 +190,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             previousIntersectedBox = intersectedBox;
+            resetCameraTimeout = setTimeout(resetCameraToDefault, 1000);
         }
     }
 
@@ -159,7 +199,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const secondLevelNeighbors = [];
         const row = Math.floor(index / cols);
 
-        // Check top neighbor
         if (row > 0) {
             firstLevelNeighbors.push(index - cols);
             if (row > 1) {
@@ -167,7 +206,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
-        // Check bottom neighbor
         if (row < rows - 1) {
             firstLevelNeighbors.push(index + cols);
             if (row < rows - 2) {
@@ -180,30 +218,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
     window.addEventListener('mousemove', onMouseMove, false);
 
-    // Render loop
     const animate = function () {
         requestAnimationFrame(animate);
-
-        // Update controls
         controls.update();
-
         renderer.render(scene, camera);
     };
 
     animate();
 
-    // Handle window resize
     window.addEventListener('resize', () => {
         const aspect = window.innerWidth / window.innerHeight;
 
-        // Update camera parameters
         camera.left = (frustumSize * aspect) / -2;
         camera.right = (frustumSize * aspect) / 2;
         camera.top = frustumSize / 2;
         camera.bottom = frustumSize / -2;
         camera.updateProjectionMatrix();
 
-        // Update renderer size
         renderer.setSize(window.innerWidth, window.innerHeight);
         renderer.setPixelRatio(window.devicePixelRatio);
     });

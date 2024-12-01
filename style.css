@@ -12,7 +12,7 @@ body {
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-    overflow-x: hidden;
+    /* overflow-x: hidden; */
 }
 
 #threejs-container {
@@ -25,16 +25,6 @@ body {
     opacity: 1;
     /* border: 2px solid blue; */
     pointer-events: none;
-    animation: js 1.5s 1.5s ease both;
-}
-
-@keyframes js {
-    0% {
-        opacity: 0;
-    }
-    100% {
-        opacity: 1;
-    }
 }
 
 #title {
@@ -130,6 +120,13 @@ h1 {
     border: 2px solid rgb(0, 255, 64);
     pointer-events: none;
 }
-#aimodel-container p {
+
+.aimodel-text {
     position: absolute;
+    top: 490vh;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 18pt;
+    font-weight: 600;
+    opacity: 1;
 }
