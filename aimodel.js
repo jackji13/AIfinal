@@ -26,8 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
     controls.enableDamping = true;
     controls.dampingFactor = 0.25;
     controls.screenSpacePanning = false;
-    controls.minDistance = 10;
-    controls.maxDistance = 500;
+    controls.enableZoom = false; // Disable zooming via scroll
 
     // Set the target for the camera and OrbitControls
     const defaultTarget = new THREE.Vector3(0, 0, 0);

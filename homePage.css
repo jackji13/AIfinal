@@ -118,15 +118,34 @@ h1 {
     height: 100vh;
     opacity: 1;
     border: 2px solid rgb(0, 255, 64);
-    pointer-events: none;
 }
 
 .aimodel-text {
     position: absolute;
-    top: 490vh;
+    top: 410vh;
     left: 50%;
     transform: translate(-50%, -50%);
     font-size: 18pt;
     font-weight: 600;
     opacity: 1;
+}
+
+.aimodel-name {
+    position: absolute;
+    top: 490vh;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5vw;
+    font-size: 18pt;
+    font-weight: 600;
+    z-index: 20;
+
+}
+
+.aimodel-name a {
+    text-decoration: none;
+    color: #000000;
 }

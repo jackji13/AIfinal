@@ -7,7 +7,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Create a camera
     const aspect = container.clientWidth / container.clientHeight;
     const camera = new THREE.PerspectiveCamera(75, aspect, 0.1, 1000);
-    camera.position.set(0, 2, 5); // Adjust camera position for a better view
+    camera.position.set(4, 4, 4); // Adjust camera position for a better view
+    camera.lookAt(0, 0, 0);
 
     // Create a renderer
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
