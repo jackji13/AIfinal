@@ -3,7 +3,7 @@ const dataArrays = {
     p1: [
         { axis: "Accuracy", value: 80, description: "ChatGPT achieves a high level of accuracy in natural language understanding and generation tasks. Its accuracy is driven by extensive training on diverse datasets, though it may sometimes provide overly generic or incorrect responses in niche scenarios." },
         { axis: "Speed", value: 90, description: "ChatGPT processes input data and generates output quickly, making it suitable for real-time interactions. Its streamlined architecture ensures low latency during inference." },
-        { axis: "Training Data Amount", value: 85, description: "ChatGPT was trained on a massive dataset of books, websites, and conversations, which enables it to provide contextually rich responses. However, the dataset is curated, so it may lack certain domain-specific details." },
+        { axis: "Training Data", value: 85, description: "ChatGPT was trained on a massive dataset of books, websites, and conversations, which enables it to provide contextually rich responses. However, the dataset is curated, so it may lack certain domain-specific details." },
         { axis: "Complexity", value: 70, description: "ChatGPT's architecture balances complexity and efficiency, with enough parameters to produce coherent outputs but simplified layers compared to larger models like GPT-4." },
         { axis: "Scalability", value: 75, description: "ChatGPT scales well across various deployment environments, including APIs, embedded systems, and cloud services, but requires substantial computational resources for high-traffic applications." },
         { axis: "Robustness", value: 60, description: "ChatGPT handles many common inputs effectively but may struggle with ambiguous, adversarial, or highly technical queries, reflecting its moderate robustness in handling edge cases." }
@@ -12,7 +12,7 @@ const dataArrays = {
     p2: [
         { axis: "Accuracy", value: 85, description: "Gemini excels in fine-tuning tasks and overall accuracy due to its enhanced training dataset." },
         { axis: "Speed", value: 88, description: "Processes input data quickly while maintaining a high response quality." },
-        { axis: "Training Data Amount", value: 90, description: "Gemini is trained on a vast and diverse dataset, ensuring broad coverage." },
+        { axis: "Training Data", value: 90, description: "Gemini is trained on a vast and diverse dataset, ensuring broad coverage." },
         { axis: "Complexity", value: 65, description: "Features an optimized architecture with fewer layers for faster inference." },
         { axis: "Scalability", value: 80, description: "Designed to scale well across various deployment environments." },
         { axis: "Robustness", value: 70, description: "Handles noise and edge cases effectively, ensuring reliable outputs." }
@@ -21,7 +21,7 @@ const dataArrays = {
     p3: [
         { axis: "Accuracy", value: 75, description: "Stability AI balances accuracy and creativity for generating artistic content." },
         { axis: "Speed", value: 80, description: "Delivers outputs at an acceptable speed for artistic rendering tasks." },
-        { axis: "Training Data Amount", value: 95, description: "Utilizes an extensive dataset of creative works and artistic resources." },
+        { axis: "Training Data", value: 95, description: "Utilizes an extensive dataset of creative works and artistic resources." },
         { axis: "Complexity", value: 85, description: "Complex architecture optimized for artistic and generative use cases." },
         { axis: "Scalability", value: 70, description: "Can scale to creative teams or individuals depending on resources." },
         { axis: "Robustness", value: 75, description: "Performs well in diverse artistic scenarios but may struggle with technical queries." }
@@ -30,7 +30,7 @@ const dataArrays = {
     p4: [
         { axis: "Accuracy", value: 78, description: "Runway AI ensures accuracy in generating creative video and image outputs." },
         { axis: "Speed", value: 85, description: "Provides fast responses suitable for real-time collaboration." },
-        { axis: "Training Data Amount", value: 88, description: "Trained on video and image-specific datasets tailored for creators." },
+        { axis: "Training Data", value: 88, description: "Trained on video and image-specific datasets tailored for creators." },
         { axis: "Complexity", value: 75, description: "Features an architecture optimized for video and image generation." },
         { axis: "Scalability", value: 85, description: "Scales seamlessly for individual creators or large teams." },
         { axis: "Robustness", value: 80, description: "Reliable in creative applications but less suitable for general-purpose tasks." }
@@ -120,7 +120,7 @@ function drawChart() {
         .attr("text-anchor", "middle")
         .attr("dy", "0.35em")
         .text(d => d.axis)
-        .style("font-size", "12pt")
+        .style("font-size", "14pt")
         .style("font-family", "Arial");
 
     // Append first point to close the polygon
