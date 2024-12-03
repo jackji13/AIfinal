@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Runway</title>
+    <link rel="stylesheet" href="general.css">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/CopyShader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/EffectComposer.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/RenderPass.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/lights/RectAreaLightUniformsLib.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/ShaderPass.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/RGBELoader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/EXRLoader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+
+</head>
+
+<body>
+    
+    <div id="model-container"></div>
+
+    <section id="title">
+        <h1>How Runway work</h1>
+    </section>
+
+    <section id="text">
+        <p>
+            Runway is like a virtual studio assistant built for creators. It 
+            specializes in helping you create videos, images, and other visual 
+            projects, offering tools that make the creative process fast and easy. 
+            For example, you can use Runway to edit videos, apply effects, or 
+            generate unique visuals with just a few clicks. It’s powered by 
+            models trained on video and image-specific data, so it knows how 
+            to handle tasks like resizing, enhancing, or adding creative elements. 
+            Whether you’re a solo artist or part of a team, Runway makes collaboration 
+            simple and brings your ideas to life efficiently.
+        </p>        
+    </section>
+
+    
+    <div id="chart"><p class="chart-text">Hexagon Radar Chart</p></div>
+
+    <script src="js/runway.js"></script>
+    <script src="js/chart.js"></script>
+
+</body>
+
+</html>

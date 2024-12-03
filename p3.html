@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stability AI</title>
+    <link rel="stylesheet" href="general.css">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/CopyShader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/EffectComposer.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/RenderPass.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/lights/RectAreaLightUniformsLib.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/ShaderPass.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/RGBELoader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/EXRLoader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+
+</head>
+
+<body>
+    
+    <div id="model-container"></div>
+
+    <section id="title">
+        <h1>How Stability AI work</h1>
+    </section>
+
+    <section id="text">
+        <p>
+            Stability AI is like a creative artist with a high-tech toolbox, focused 
+            on generating stunning visuals and artistic content. When you give it an 
+            idea, it turns your request into patterns and shapes, drawing inspiration 
+            from its training data, which includes images, paintings, and creative 
+            works. Stability AI uses advanced models to imagine and create designs, 
+            art, or animations. It’s perfect for projects that need a creative touch, 
+            from generating unique images to supporting artistic workflows. Think of 
+            it as your digital collaborator, ready to turn your creative visions into reality.
+        </p>        
+    </section>
+
+    
+    <div id="chart"><p class="chart-text">Hexagon Radar Chart</p></div>
+
+    <script src="js/gemini.js"></script>
+    <script src="js/chart.js"></script>
+
+</body>
+
+</html>

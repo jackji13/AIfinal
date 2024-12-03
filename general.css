@@ -1,5 +1,5 @@
 * {
-    border: 1px solid red;
+    /* border: 1px solid red; */
     margin: 0;
     padding: 0;
 }
@@ -14,12 +14,50 @@ body {
     overflow-x: hidden;
 }
 
-#title {
-    width: 100vw;
-    height: 100vh;
-}
-
 #model-container {
     width: 100vw;
     height: 100vh;
+    transform: translateY(-5vh);
+    z-index: -1;
+    pointer-events: none;
+}
+
+#title {
+    position: absolute;
+    top: 0;
+    left: 50vw;
+    transform: translate(-50%, -50%);
+    text-align: justify;
+    margin-top: 10vh;
+}
+
+h1 {
+    font-size: 30pt;
+    font-weight: 600;
+}
+
+#text {
+    position: absolute;
+    bottom: 0;
+    left: 50vw;
+    transform: translate(-50%, -50%);
+    width: 85%;
+    text-align: justify;
+    font-size: 18pt;
+    font-weight: 600;
+    margin-bottom: 1vh;
+}
+
+#chart {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.chart-text {
+    font-size: 30pt;
+    font-weight: 600;
 }

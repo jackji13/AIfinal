@@ -36,8 +36,8 @@ body {
 }
 
 h1 {
-    font-weight: 600;
     font-size: 50pt;
+    font-weight: 600;
     white-space: nowrap;
     animation: h1 1.5s ease;
     z-index: 10;
