@@ -1,6 +1,6 @@
 
 * {
-    border: 1px solid red;
+    /* border: 1px solid red; */
     margin: 0;
     padding: 0;
 }
@@ -23,7 +23,6 @@ body {
     height: 100vh;
     z-index: -1;
     opacity: 1;
-    /* border: 2px solid blue; */
     pointer-events: none;
 }
 
@@ -89,7 +88,7 @@ h1 {
 .info-text p {
     margin-bottom: 20px;
     line-height: 1.6;
-    opacity: 1; /* Initially hidden */
+    opacity: 1;
 }
 
 #training {
