@@ -151,3 +151,30 @@ function drawChart() {
 drawChart();
 
 window.addEventListener("resize", drawChart);
+
+gsap.registerPlugin(ScrollTrigger);
+
+gsap.to('#text', {
+    opacity: 0,
+    scale: 0.5,
+    ease: 'power2.out',
+    scrollTrigger: {
+        trigger: '#model-container',
+        start: 'bottom 80%',
+        end: 'bottom 30%',
+        scrub: true,
+    },
+});
+
+gsap.from('#chart', {
+    opacity: 0,
+    x: '-250px',
+    ease: 'power2.out',
+    duration: 1.5,
+    scrollTrigger: {
+        trigger: '#chart',
+        start: 'top 70%',
+        end: 'top top',
+        scrub: true,
+    },
+});

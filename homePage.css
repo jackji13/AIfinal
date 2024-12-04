@@ -116,7 +116,6 @@ h1 {
     width: 100vw;
     height: 100vh;
     opacity: 1;
-    border: 2px solid rgb(0, 255, 64);
 }
 
 .aimodel-text {
