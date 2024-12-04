@@ -20,13 +20,15 @@ document.addEventListener('DOMContentLoaded', () => {
         color: new THREE.Color(0x0077ff),
         metalness: 0,
         roughness: 0.1,
-        transmission: 0.3,
+        transmission: 0.6,
         transparent: true,
         clearcoat: 1.0,
         clearcoatRoughness: 0,
         reflectivity: 3,
-        depthWrite: false
+        depthWrite: false,
+        side: THREE.DoubleSide // Ensures the material is applied to both sides
     });
+    
 
     const loader = new THREE.GLTFLoader();
     let mixer;

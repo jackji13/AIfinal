@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const aspect = container.clientWidth / container.clientHeight;
     const camera = new THREE.PerspectiveCamera(75, aspect, 0.1, 1000);
-    camera.position.set(3.5, 3.5, 3.5);
+    camera.position.set(3, 3, 3);
     camera.lookAt(0, 0, 0);
 
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
         reflectivity: 3,
         depthWrite: false
     });
-
+    
     const loader = new THREE.GLTFLoader();
     let mixer;
 
