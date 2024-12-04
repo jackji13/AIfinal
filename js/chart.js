@@ -1,4 +1,3 @@
-// Define data arrays for each page
 const dataArrays = {
     p1: [
         { axis: "Accuracy", value: 80, description: "ChatGPT achieves a high level of accuracy in natural language understanding and generation tasks. Its accuracy is driven by extensive training on diverse datasets, though it may sometimes provide overly generic or incorrect responses in niche scenarios." },
@@ -37,20 +36,16 @@ const dataArrays = {
     ]
 };
 
-// Get the current page filename
 const currentPage = window.location.pathname.split("/").pop().replace(".html", "");
 
-// Select the appropriate data array
-const data = dataArrays[currentPage] || dataArrays.p1; // Default to p1 if no match
+const data = dataArrays[currentPage] || dataArrays.p1;
 
-// Append the SVG container to the #chart section
 const svg = d3.select("#chart")
     .append("svg")
     .attr("id", "radar-chart-svg")
     .append("g")
     .attr("id", "radar-chart-group");
 
-// Create a tooltip
 const tooltip = d3.select("body")
     .append("div")
     .style("position", "absolute")
@@ -60,30 +55,24 @@ const tooltip = d3.select("body")
     .style("font-size", "12pt")
     .style("font-family", "Arial");
 
-// Function to draw the radar chart
 function drawChart() {
-    // Clear any previous elements in the group
     svg.selectAll("*").remove();
 
-    // Get the shortest side of the window
     const size = Math.min(window.innerWidth, window.innerHeight) * 0.8;
     const margin = 65;
     const width = size;
     const height = size;
     const radius = Math.min(width, height) / 2 - margin;
 
-    // Update the SVG size
     d3.select("#radar-chart-svg")
         .attr("width", width)
         .attr("height", height);
 
     svg.attr("transform", `translate(${width / 2}, ${height / 2})`);
 
-    // Scales and axes
     const angleSlice = (2 * Math.PI) / data.length;
     const rScale = d3.scaleLinear().domain([0, 100]).range([0, radius]);
 
-    // Create grid circles
     const gridLevels = 5;
     const gridStep = 100 / gridLevels;
 
@@ -98,7 +87,6 @@ function drawChart() {
             .attr("stroke-width", 2);
     }
 
-    // Create the axes (spokes)
     svg.selectAll(".axis")
         .data(data)
         .enter()
@@ -110,7 +98,6 @@ function drawChart() {
         .attr("stroke", "lightgray")
         .attr("stroke-width", 2);
 
-    // Add labels to axes
     svg.selectAll(".label")
         .data(data)
         .enter()
@@ -123,10 +110,8 @@ function drawChart() {
         .style("font-size", "14pt")
         .style("font-family", "Arial");
 
-    // Append first point to close the polygon
     const closedData = [...data, data[0]];
 
-    // Create radar polygon
     const radarLine = d3.lineRadial()
         .radius(d => rScale(d.value))
         .angle((d, i) => angleSlice * i);
@@ -134,11 +119,10 @@ function drawChart() {
     svg.append("path")
         .datum(closedData)
         .attr("d", radarLine)
-        .attr("fill", "rgba(0, 123, 255, 0.3)") // Blue fill with transparency
+        .attr("fill", "rgba(0, 123, 255, 0.3)")
         .attr("stroke", "#0077ff")
         .attr("stroke-width", 5);
 
-    // Add data points with hover interactions
     svg.selectAll(".dot")
         .data(data)
         .enter()
@@ -164,8 +148,6 @@ function drawChart() {
         });
 }
 
-// Draw the chart initially
 drawChart();
 
-// Add a resize event listener to redraw the chart on window resize
 window.addEventListener("resize", drawChart);

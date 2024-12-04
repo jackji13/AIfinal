@@ -1,11 +1,9 @@
 document.addEventListener('DOMContentLoaded', () => {
     const sceneContainer = document.getElementById('aimodel-container');
 
-    // Create a scene
     const scene = new THREE.Scene();
     scene.background = null;
 
-    // Create an orthographic camera
     const aspect = sceneContainer.clientWidth / sceneContainer.clientHeight;
     const frustumSize = 25;
     const camera = new THREE.OrthographicCamera(
@@ -15,25 +13,21 @@ document.addEventListener('DOMContentLoaded', () => {
     );
     camera.position.set(-80, 50, 100);
 
-    // Create a renderer
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setClearColor(0x000000, 0);
     sceneContainer.appendChild(renderer.domElement);
 
-    // Add OrbitControls
     const controls = new THREE.OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
     controls.dampingFactor = 0.25;
     controls.screenSpacePanning = false;
-    controls.enableZoom = false; // Disable zooming via scroll
+    controls.enableZoom = false;
 
-    // Set the target for the camera and OrbitControls
     const defaultTarget = new THREE.Vector3(0, 0, 0);
     camera.lookAt(defaultTarget);
     controls.target.copy(defaultTarget);
 
-    // Create a shared material for boxes
     const sharedMaterial = new THREE.MeshPhysicalMaterial({
         color: new THREE.Color(0x0077ff),
         metalness: 0,
@@ -46,7 +40,6 @@ document.addEventListener('DOMContentLoaded', () => {
         depthWrite: false
     });
 
-    // Create a grid of boxes
     const rows = 4;
     const cols = 1;
     const boxWidth = 0;
@@ -67,7 +60,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const box = new THREE.Mesh(geometry, material);
 
-            // Load texture and apply as an overlay to a different face of the box
             textureLoader.load(texturePaths[i], (tex) => {
                 tex.wrapS = THREE.ClampToEdgeWrapping;
                 tex.wrapT = THREE.ClampToEdgeWrapping;
@@ -92,21 +84,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 box.add(overlayMesh);
             });
 
-            // Position the boxes in a grid
             box.position.set(
                 i * spacingRow - (rows * spacingRow) / 2 + spacingRow / 2,
                 0,
                 j * spacingColumn - (cols * spacingColumn) / 2 + spacingColumn / 2
             );
 
-            // Make the box clickable
             box.userData = { page: targetPages[i] };
             scene.add(box);
             boxes.push(box);
         }
     }
 
-    // Add an area light on top of the boxes
     const lightWidth = rows * spacingRow + 50;
     const lightHeight = cols * spacingColumn + 50;
     const areaLight = new THREE.RectAreaLight(0xffffff, 15, lightWidth, lightHeight);
@@ -114,7 +103,6 @@ document.addEventListener('DOMContentLoaded', () => {
     areaLight.lookAt(0, 0, 0);
     scene.add(areaLight);
 
-    // Raycaster for mouse interaction
     const raycaster = new THREE.Raycaster();
     const mouse = new THREE.Vector2();
     let intersectedBox = null;
@@ -153,7 +141,6 @@ document.addEventListener('DOMContentLoaded', () => {
             if (intersectedBox) {
                 gsap.to(intersectedBox.position, { y: 9, duration: 0.5, ease: "power1.out" });
 
-                // Set a timeout to move the camera after 0.5s
                 hoverTimeout = setTimeout(() => {
                     if (intersectedBox) {
                         gsap.to(controls.target, {

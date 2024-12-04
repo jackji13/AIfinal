@@ -14,12 +14,67 @@ body {
     overflow-x: hidden;
 }
 
+.navbar {
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    animation: navbar 1s 1s ease both;
+}
+
+@keyframes navbar {
+    0% {
+        transform: translateY(-100px);
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.home {
+    font-size: 18pt;
+    color: #000000;
+    text-decoration: none;
+    margin: 30px;
+}
+
+.next {
+    width: 10%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 30px;
+}
+
+.next a {
+    font-size: 18pt;
+    color: #000000;
+    text-decoration: none;
+
+}
+
 #model-container {
     width: 100vw;
     height: 100vh;
     transform: translateY(-5vh);
     z-index: -1;
     pointer-events: none;
+    animation: model 1s ease;
+}
+
+@keyframes model {
+    0% {
+        transform: translateY(100px);
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
 }
 
 #title {
@@ -34,6 +89,19 @@ body {
 h1 {
     font-size: 30pt;
     font-weight: 600;
+    white-space: nowrap;
+    animation: h1 1.5s ease;
+}
+
+@keyframes h1 {
+    0% {
+        opacity: 0;
+        letter-spacing: 70px;
+    }
+    100% {
+        opacity: 1;
+        letter-spacing: 0px;
+    }
 }
 
 #text {
@@ -46,6 +114,16 @@ h1 {
     font-size: 18pt;
     font-weight: 600;
     margin-bottom: 1vh;
+    animation: text 1s 1s ease both;
+}
+
+@keyframes text {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
 }
 
 #chart {

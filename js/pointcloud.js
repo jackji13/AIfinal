@@ -1,64 +1,54 @@
-// Ensure GSAP's ScrollTrigger is registered
 gsap.registerPlugin(ScrollTrigger);
 
-// Select the container element
 const container = document.getElementById('threejs-container');
 
-// Set up the scene, camera, and renderer
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, container.offsetWidth / container.offsetHeight, 0.1, 1000);
-const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true }); // Enable transparency
+const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
 renderer.setSize(container.offsetWidth, container.offsetHeight);
-renderer.setPixelRatio(window.devicePixelRatio); // For high-resolution displays
-renderer.setClearColor(0x000000, 0); // Transparent background
+renderer.setPixelRatio(window.devicePixelRatio);
+renderer.setClearColor(0x000000, 0);
 container.appendChild(renderer.domElement);
 
-// Create a point cloud
-const pointCount = 1000; // Number of points in the cloud
-const positions = new Float32Array(pointCount * 3); // Array to hold x, y, z coordinates
-const originalPositions = new Float32Array(pointCount * 3); // To save original positions for animation
+const pointCount = 1000;
+const positions = new Float32Array(pointCount * 3);
+const originalPositions = new Float32Array(pointCount * 3);
 
 for (let i = 0; i < pointCount; i++) {
-    const x = (Math.random() - 0.5) * 10; // x coordinate
-    const y = (Math.random() - 0.5) * 10; // y coordinate
-    const z = (Math.random() - 0.5) * 10; // z coordinate
+    const x = (Math.random() - 0.5) * 10;
+    const y = (Math.random() - 0.5) * 10;
+    const z = (Math.random() - 0.5) * 10;
 
     originalPositions[i * 3] = x;
     originalPositions[i * 3 + 1] = y;
     originalPositions[i * 3 + 2] = z;
 
-    positions[i * 3] = x * 0.1; // Initially scale down positions
+    positions[i * 3] = x * 0.1;
     positions[i * 3 + 1] = y * 0.1;
     positions[i * 3 + 2] = z * 0.1;
 }
 
-// Create a buffer geometry to hold the points
 const geometry = new THREE.BufferGeometry();
 geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
 
-// Load textures from assets
-const circleTexture = new THREE.TextureLoader().load('assets/circle.png'); // Circle texture
-const squareTexture = new THREE.TextureLoader().load('assets/square.png'); // Square texture
+const circleTexture = new THREE.TextureLoader().load('assets/circle.png');
+const squareTexture = new THREE.TextureLoader().load('assets/square.png');
 
-// Create a material for the points (circles by default)
 const material = new THREE.PointsMaterial({
     size: 0.1,
-    color: new THREE.Color(0x0077ff), // Initial color blue
+    color: new THREE.Color(0x0077ff),
     transparent: true,
     opacity: 0.8,
     sizeAttenuation: true,
-    map: circleTexture, // Start with the circle texture
+    map: circleTexture,
 });
-material.alphaTest = 0.5; // Avoid transparency issues
+material.alphaTest = 0.5;
 
-// Create the point cloud
 const pointCloud = new THREE.Points(geometry, material);
 scene.add(pointCloud);
 
-// Position the camera
 camera.position.z = 5;
 
-// Handle window resizing
 function onWindowResize() {
     const width = container.offsetWidth;
     const height = container.offsetHeight;
@@ -68,47 +58,44 @@ function onWindowResize() {
 }
 window.addEventListener('resize', onWindowResize);
 
-// Animation loop
-let rotationSpeedY = 0.001; // Initial Y-axis rotation speed
-let rotationSpeedX = 0.0005; // Initial X-axis rotation speed
+let rotationSpeedY = 0.001;
+let rotationSpeedX = 0.0005;
 
 function animate() {
     requestAnimationFrame(animate);
 
-    pointCloud.rotation.y += rotationSpeedY; // Rotate on Y-axis
-    pointCloud.rotation.x += rotationSpeedX; // Slight rotation on X-axis
+    pointCloud.rotation.y += rotationSpeedY;
+    pointCloud.rotation.x += rotationSpeedX;
 
     renderer.render(scene, camera);
 }
 animate();
 
-// GSAP animation to toggle between circle and square textures with smooth color transition
 gsap.to(material.color, {
-    r: 0.3, // Transition red channel from blue (0.0077ff) to green (0x00ff00)
-    g: 1, // Full green channel
-    b: 0, // No blue channel
+    r: 0.3,
+    g: 1,
+    b: 0,
     scrollTrigger: {
-        trigger: '#training', // Trigger on the training section
-        start: 'top 75%', // Start when #training is 75% in the viewport
-        end: 'top 25%', // End when #training is 25% in the viewport
-        scrub: true, // Smoothly ties animation to scroll progress
+        trigger: '#training',
+        start: 'top 75%',
+        end: 'top 25%',
+        scrub: true,
         onUpdate: (self) => {
-            const progress = self.progress; // Scroll progress between 0 and 1
+            const progress = self.progress;
             if (progress > 0.5) {
-                material.map = squareTexture; // Switch to square texture
+                material.map = squareTexture;
             } else {
-                material.map = circleTexture; // Switch back to circle texture
+                material.map = circleTexture;
             }
-            material.needsUpdate = true; // Ensure material updates in the scene
+            material.needsUpdate = true;
         },
     },
 });
 
-// GSAP animation for point cloud spread
 gsap.to(geometry.attributes.position.array, {
     endArray: originalPositions,
     onUpdate: () => {
-        geometry.attributes.position.needsUpdate = true; // Notify Three.js of position updates
+        geometry.attributes.position.needsUpdate = true;
     },
     ease: 'power2.out',
     duration: 2,
@@ -120,7 +107,6 @@ gsap.to(geometry.attributes.position.array, {
     },
 });
 
-// GSAP scroll animation for the point cloud's spin speed
 gsap.to({}, {
     ease: 'power2.out',
     duration: 1,
@@ -137,7 +123,6 @@ gsap.to({}, {
     },
 });
 
-// GSAP camera zoom animation
 gsap.to(camera.position, {
     z: 2,
     ease: 'power2.out',
